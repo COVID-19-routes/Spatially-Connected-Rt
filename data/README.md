@@ -10,6 +10,10 @@ This file contains a preprocessed subset of the Community Mobility reports perta
 
 This file contains the `C^0` contact matrix, see SM, *6 Setup of the application to the epidemic in Veneto – Generation of the contact matrix*.
 
+To recreate this file
+- launch `fetch_mobility.py` in the `ISTAT` subdirectory,
+- launch `make_mobility_matrix.py` in this directory.
+
 ## `synthetic_rt.mat`
 
 R_t for the synthetic example, see SM, *5 Setup of the synthetic example*.
