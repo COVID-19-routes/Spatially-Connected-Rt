@@ -7,7 +7,7 @@ import click
 import pandas as pd
 import requests
 
-URL = "http://www.istat.it/storage/cartografia/matrici_pendolarismo/matrici_pendolarismo_2011.zip"
+URL = "https://www.istat.it/storage/cartografia/matrici_pendolarismo/matrici_pendolarismo_2011.zip"
 LCL = Path("matrici_pendolarismo_2011.zip")
 L_STRATA = Path("matrici_L")
 S_STRATA = Path("matrici_S")
