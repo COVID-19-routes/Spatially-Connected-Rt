@@ -6,6 +6,10 @@ This directory contains the curated data used for the manuscript along with auxi
 
 This file contains a preprocessed subset of the Community Mobility reports pertaining to the Veneto provinces, see SM, *6 Setup of the application to the epidemic in Veneto – Generation of the contact matrix*.
 
+To recreate this file
+- launch `fetch_reports.py` in the `Google` subdirectory,
+- run the MATLAB® script `extract_google_data.m` in this directory.
+
 ## `mobility.mat`
 
 This file contains the `C^0` contact matrix, see SM, *6 Setup of the application to the epidemic in Veneto – Generation of the contact matrix*.
