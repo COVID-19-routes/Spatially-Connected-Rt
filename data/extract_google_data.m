@@ -3,8 +3,9 @@ close all
 clear all
 
 % Read from file
-t1 = readtable('2020_IT_Region_Mobility_Report.csv');
-t2 = readtable("2021_IT_Region_Mobility_Report.csv");
+opts = detectImportOptions('Google/2020_IT_Region_Mobility_Report.csv');
+t1 = readtable('Google/2020_IT_Region_Mobility_Report.csv', opts);
+t2 = readtable('Google/2021_IT_Region_Mobility_Report.csv', opts);
 
 % Select Veneto and columns of interest
 t1 = t1(ismember(t1.sub_region_1, 'Veneto'),:);
