@@ -23,36 +23,36 @@ for i = 1:7
     if i < 7
         set(gca,'xticklabel',{[]})
     end
+    ylabel('$\mathcal{R}$','interpreter','latex')
     if i == 1
-        ylabel('VR')
+        text(630,1.5,'Verona','Rotation',90,'HorizontalAlignment','center')
     elseif i == 2
-        ylabel('VI')
+        text(630,1.5,'Vicenza','Rotation',90,'HorizontalAlignment','center')
     elseif i == 3
-        ylabel('BL')
+        text(630,1.5,'Belluno','Rotation',90,'HorizontalAlignment','center')
     elseif i == 4
-        ylabel('TV')
+        text(630,1.5,'Treviso','Rotation',90,'HorizontalAlignment','center')
     elseif i == 5
-        ylabel('VE')
+        text(630,1.5,'Venice','Rotation',90,'HorizontalAlignment','center')
     elseif i == 6
-        ylabel('PD')
+        text(630,1.5,'Padua','Rotation',90,'HorizontalAlignment','center')
     elseif i == 7
-        ylabel('RO')
+        text(630,1.5,'Rovigo','Rotation',90,'HorizontalAlignment','center')
     end                       
     if i == 1
-        title('$\mathcal{R}$','interpreter','latex')
-        legend([p2,p1,p0], '$\mathcal{R}^{\textrm{c}}_t \textrm{ (Eq. 1)}$',...
-            '$\mathcal{R}^{\textrm{c}}_t \textrm{ (Eq. s4)}$',...
-            '$\mathcal{R}^{\textrm{d}}_t$', 'interpreter', 'latex')
+        legend([p2,p1,p0], '$\mathcal{R}^{\textrm{c}}_l \textrm{ - Eq. (1)}$',...
+            '$\mathcal{R}^{\textrm{c}}_l \textrm{ - Eq. (S4)}$',...
+            '$\mathcal{R}^{\textrm{d}}_l$', 'interpreter', 'latex')
         legend boxoff
     end
     set(gca, 'Color', 'None') 
     ylim([0 3])
         
     subplot(7*2,2*2,[(3+8*(i-1)):(4+8*(i-1)) (7+8*(i-1)):(8+8*(i-1))])
-    filler(Time(a:b),data_sim.Q95(i,a:b),data_sim.Q05(i,a:b),colors(4),0.2);
-    q1 = filler(Time(a:b),data_obs(i,a:b),zeros(1,b-a+1),colors(5),0.4);
+    filler(Time(a:b),data_sim.Q95(i,a:b),data_sim.Q05(i,a:b),colors(5),0.2);
+    q1 = filler(Time(a:b),data_obs(i,a:b),zeros(1,b-a+1),[0 0 0],0.15);
     hold on
-    q2 = plot(Time(a:b),data_sim.Q50(i,a:b),'color',colors(4),'linewidth',.75);
+    q2 = plot(Time(a:b),data_sim.Q50(i,a:b),'color',colors(5),'linewidth',.75);
 	hold off
     xlim([Time(a) Time(b)])
     ylim([0 1.1*max(max(data_sim.Q95))])
@@ -60,12 +60,13 @@ for i = 1:7
         set(gca,'xticklabel',{[]})
     end
     if i == 1
-        title('$F(t)$','interpreter','latex')
         legend([q1,q2],'Observed','Simulated')
         legend boxoff
     end
+    ylabel('$F$','interpreter','latex')
     box off
     set(gca, 'Color', 'None')
+    set(gca,'YAxisLocation','right')
 end
 set(findall(gcf,'-property','FontSize'),'FontSize',9)
 

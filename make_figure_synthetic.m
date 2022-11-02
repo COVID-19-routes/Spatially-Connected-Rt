@@ -1,8 +1,8 @@
 function make_figure_synthetic(R_in,R_out,R0,model_in,model_out,diff,csi)
 
 colors = ["#F46036"; "#2E294E"; "#1B998B"];
-% colors2 = ["#002642"; "#840032"; "#e59500"];
-colors2 = ["#2274a5"; "#f75c03"; "#f1c40f"];
+
+colors2 = ["#2274a5"; "#d1495b"; "#00798c"];
 
 
 tt=1:size(R_out.Q50,2); a = find(R_out.Q95(1,:),1,'first');
@@ -12,30 +12,29 @@ for nn = 1:3
     filler(tt(a:end),R_out.Q95(nn,a:end),R_out.Q05(nn,a:end),colors2(2),0.2);
     filler(tt(a:end),R0.Q95(nn,a:end),R0.Q05(nn,a:end),colors2(3),0.2);
     hold on
+    p0 = plot(R_in(nn,:),'color','k','linewidth',1.75);
     p1 = plot(R_out.Q50(nn,:),'color',colors2(2),'linewidth',1);
     p2 = plot(R0.Q50(nn,:),'color',colors2(3),'linewidth',1);
-    p0 = plot(R_in(nn,:),'color',colors2(1),'linewidth',1);
     plot(tt(a:end),ones(1,length(tt(a:end))),'color','red','linewidth',0.5,...
         'LineStyle','--')
     if nn == 1
-        ylabel('1','fontweight','bold')
+        ylabel('$\mathcal{R}_1$','Interpreter','latex')
         legend([p0,p1,p2], '$\mathcal{R}^{\textrm{true}}_l$',...
-            '$\mathcal{R}^{\textrm{c}}_t$',...
-            '$\mathcal{R}^{\textrm{d}}_t$', 'interpreter', 'latex',...
+            '$\mathcal{R}^{\textrm{c}}_l$',...
+            '$\mathcal{R}^{\textrm{d}}_l$', 'interpreter', 'latex',...
             'location','northeast')
         legend boxoff
     elseif nn == 2
-        ylabel('2','fontweight','bold')
+        ylabel('$\mathcal{R}_2$','Interpreter','latex')
     elseif nn == 3
-        ylabel('3','fontweight','bold')
+        ylabel('$\mathcal{R}_3$','Interpreter','latex')
     end
     xlim([tt(a) tt(end)])
+    ylim([0 3])
     if nn ~= 3
         set(gca,'XTickLabel',[])
     end
-    if nn == 1
-        title('$\mathcal{R}$','interpreter','latex')
-    elseif nn == 3
+    if nn == 3
         xlabel('Time')
     end
     set(gca, 'Color', 'None')
@@ -52,14 +51,21 @@ for nn = 1:3
     set(gca, 'YScale', 'log')
     set(gca, 'Color', 'None')
     if nn == 1
-        title('$F(t)$','interpreter','latex')
         legend([q1 q2], "Data","Simulated",'Location','northwest')
         legend boxoff
         set(gca,'XTickLabel',[])
     elseif nn == 2
         set(gca,'XTickLabel',[])
     end
+    if nn == 1
+        ylabel('$F_1$','Interpreter','latex')
+    elseif nn == 2
+        ylabel('$F_2$','Interpreter','latex')
+    elseif nn == 3
+        ylabel('$F_3$','Interpreter','latex')
+    end
     box off
+    set(gca,'YAxisLocation','right')
 
     subplot(4*2,2*2,[31 32])
     hold on
@@ -67,6 +73,7 @@ for nn = 1:3
     xlabel('Time')
     set(gca, 'Color', 'None')
     ylabel('$\xi_l$','interpreter','latex')
+    set(gca,'YAxisLocation','right')
 end
     
     subplot(4*2,2*2,[25 26 29 30])

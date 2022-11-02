@@ -35,7 +35,7 @@ function make_figure_mobility(Time,csi,eta,x)
     yyaxis right
     p3 = plot(Time(a:end),eta(i,a:end),'Color',colors(2),'LineWidth',1.25);
     ylim([0 1])
-    if rem(i,2) == 0
+    if rem(i,2) == 0 || i == 7
         ylabel('\eta')
     else 
         set(gca,'yticklabel',{[]})

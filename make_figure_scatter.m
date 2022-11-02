@@ -46,12 +46,13 @@ function f = make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
     for bin = 1:length(ax_x)
         line([ax_x(bin) ax_x(bin)],[pct25(bin) pct75(bin)],'color',colors{2},'linewidth',1.2)
     end
-    xlabel('$\frac{1-\eta_l(t)}{(1-\xi_l(t))^2}\frac{\sum_{m=1}^N C_{lm} n_m}{n_l}$','interpreter','latex','fontsize',24)
-    ylabel('$\frac{\mathcal{R}^\mathrm{c}_l(t)}{\mathcal{R}^\mathrm{d}_l(t)}$','interpreter','latex','fontsize',24)
     set(get(gca,'ylabel'),'rotation',0)
     xlim([0.3 1.5])
     ylim([0.3 1.5])
     box off
     set(findall(gcf,'-property','FontSize'),'FontSize',9)
+    xlabel('$\frac{1-\eta_l(t)}{(1-\xi_l(t))^2}\frac{\sum_{m=1}^N C_{lm} n_m}{n_l}$','interpreter','latex','fontsize',15)
+    ylabel('$\frac{\mathcal{R}^\mathrm{c}_l(t)}{\mathcal{R}^\mathrm{d}_l(t)}$','interpreter','latex','fontsize',15)
+    
 
 end
