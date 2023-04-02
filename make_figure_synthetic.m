@@ -6,7 +6,7 @@ colors2 = ["#2274a5"; "#d1495b"; "#00798c"];
 
 
 tt=1:size(R_out.Q50,2); a = find(R_out.Q95(1,:),1,'first');
-figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 12 18])
+figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 8.7 12])
 for nn = 1:3
     subplot(4*2,2*2,[(1+8*(nn-1)):(2+8*(nn-1)) (5+8*(nn-1)):(6+8*(nn-1))])
     filler(tt(a:end),R_out.Q95(nn,a:end),R_out.Q05(nn,a:end),colors2(2),0.2);
@@ -77,18 +77,18 @@ for nn = 1:3
 end
     
     subplot(4*2,2*2,[25 26 29 30])
-    b = bar(diff');
+    b = bar(diff'*100);
     for nn = 1:3
         set(b(nn),'facecolor',colors{nn})
         set(b(nn),'edgealpha',0)
     end
     xticklabels(["\alpha = 0"; "0.5"; "1"; "2"])
-    ylim([0 1.1*max(max(diff))])
-    ylabel('$\sqrt{ \sum_{t=1}^{T}(\mathcal{R}_l(t) - \mathcal{R}^{\textrm{true}}_l(t)})^2$', 'interpreter','latex')
+    ylim([0 1.1*max(max(diff*100))])
+    ylabel('MAPE [%]')
     box off
     set(gca, 'Color', 'None')
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [18 18]);
-set(findall(gcf,'-property','FontSize'),'FontSize',9)
+set(findall(gcf,'-property','FontSize'),'FontSize',7)
     
 end

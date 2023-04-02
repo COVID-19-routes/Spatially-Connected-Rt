@@ -7,7 +7,8 @@ clc
 % 'check_stability' -> checks the stabiliy of the particle filter
 % 'compare_with_EpiEstim' -> compares results with EpiEstim
 % 'make_figure_incidence' -> makes figure with prevalence of active cases
-purpose = 'check_stability';
+% 'compare_two_approaches' -> compares the 1st and 2nd approach
+purpose = 'compare_with_EpiEstim';
 
 
 % Load incidence
@@ -63,17 +64,16 @@ switch purpose
         % run filters
         par.lik = 'V1'; 
         [Rt1, diagnostic,model_out] = pf(Fp,par,Q,ResPop,csi);
-        par.lik = 'V2';
-        [Rt2] = pf(Fp,par,Q,ResPop,csi);par.lik = 'V1';
         [R0] = pf(Fp,par,Q,ResPop,zeros(7,lim));
         % get eta
         alpha = compute_alpha(model_out.Q50,par);
         eta = get_eta(csi,Rt1.Q50,ResPop,alpha,Q);
         % make figures
-        make_figure_results(R0,Rt1,Rt2,Time,model_out,Fp)
-        make_figure_averted(Time,Fp,Rt1.Q50,csi,Q,ResPop,par,230,R0.Q50)
+        make_figure_results(R0,Rt1,Time,model_out,Fp)
+        make_figure_averted(Time,Fp,Rt1.Q50,csi,Q,ResPop,par,230)
         make_figure_scatter(csi,Rt1,eta,R0,ResPop,Q,par)
         make_figure_mobility(Time,csi,eta,x)
+        make_figure_metrics(Time,R0.Q50,Rt1.Q50)
         save('results/run_veneto.mat')
 
     case 'check_stability'
@@ -126,7 +126,7 @@ switch purpose
         incidence = Fp./ResPop*1000;
         % Make figure
         colors = ["#fbcf36", "#11776c", "#5e4fa2", "#5299cb", "#98d5a4", "#ee6445", "#9d1642"];
-        figure('Renderer','painters','Units','centimeters','Position',[0 0 12 7])
+        figure('Renderer','painters','Units','centimeters','Position',[0 0 11.4 6])
         hold on
         for i = 1:7
         plot(Time(1:600),incidence(i,1:600),'linewidth',1,'Color',colors(i))
@@ -137,5 +137,15 @@ switch purpose
             "Venice (VE)", "Padua(PD)", "Rovigo(RO)"],'location','east')
         legend boxoff
         xlim([Time(1) Time(600)])
-        set(findall(gcf,'-property','FontSize'),'FontSize',9)
+        
+        set(gca,'Color','none')
+        set(findall(gcf,'-property','FontSize'),'FontSize',7)
+    case 'compare_two_approaches'
+        % run filters
+        par.lik = 'V1'; 
+        [Rt1, ~,~] = pf(Fp,par,Q,ResPop,csi);
+        par.lik = 'V2'; 
+        [Rt2, ~,~] = pf(Fp,par,Q,ResPop,csi);
+        make_figure_compare(Time,Rt1.Q50,Rt2.Q50)
+
 end

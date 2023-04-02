@@ -1,5 +1,6 @@
-function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in,R0)
+function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
 
+    Time.Format = 'MMMyy';
     alphas = [0 0.5 2];
     
     FF = zeros(7,600,length(alphas));
@@ -22,7 +23,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in,R0)
     colors = ["#F46036"; "#2E294E"; "#1B998B"];
     prov = ["VR", "VI", "BL", "TV", "VE", "PD", "RO"];
 
-    figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 12 9])
+    figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 8.7 6])
     for i = 1:7
         if rem(i, 2) == 0
             subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
@@ -40,7 +41,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in,R0)
     if i == 7
         lgd = legend([p1 p2 p3 p4],'0', '0.5',...
             '1', '2','location','west'); 
-        lgd.Title.String = '\alpha =';
+        lgd.Title.String = '\psi =';
         legend boxoff;
     end
     if rem(i,2) ~=0
@@ -54,7 +55,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in,R0)
     box off
     set(gca, 'Color', 'None') 
     end
-    set(findall(gcf,'-property','FontSize'),'FontSize',9)
+    set(findall(gcf,'-property','FontSize'),'FontSize',8)
     subplot(4*2,2*2,[27 28 31 32])
     b = bar(DD);
     for nn = 1:3
@@ -66,5 +67,5 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in,R0)
     set(gca, 'Color', 'None','YAxisLocation','right') 
     ylabel('$\delta F$ [\%]','interpreter','latex') 
     xticklabels(prov)
-    set(findall(gcf,'-property','FontSize'),'FontSize',9)
+    set(findall(gcf,'-property','FontSize'),'FontSize',7)
 end

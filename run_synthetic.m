@@ -47,8 +47,8 @@ par.lik = 'V1';
 % RUN
 
 % Generate cases
-sigmas = [0.05; 0.08; 0.03]; % perturbation with log-normal noise
-%sigmas = [0.00; 0.00; 0.00]; % perturbation with log-normal noise
+%sigmas = [0.05; 0.08; 0.03]; % perturbation with log-normal noise
+sigmas = [0.00; 0.00; 0.00]; % perturbation with log-normal noise
 F = zeros(N,365);
 F(1,1:6) = 25;
 F(2,1:6) = 15;
@@ -66,6 +66,12 @@ subplot(3,2,4); plot(1:365,zeros(3,365)'); ylabel('$\psi$','interpreter','latex'
 subplot(3,2,5); semilogy(1:365,F(:,1:end)); set(gca, 'YScale', 'log'); ylabel('$F$','interpreter','latex'); xlabel('Time'); xlim([1 365])
 subplot(3,2,6); semilogy(1:365,F0(:,1:end)); set(gca, 'YScale', 'log'); ylabel('$F$','interpreter','latex'); xlabel('Time'); xlim([1 365])
 
+
+figure()
+subplot(1,3,1); area(1:365, F(1,:),'FaceColor',"#F46036",'EdgeAlpha',0); ylabel('$\hat{F}$','Interpreter','latex'); box off; set(gca,'Color','None')
+subplot(1,3,2); area(1:365, F(2,:),'FaceColor',"#2E294E",'EdgeAlpha',0); box off; set(gca,'Color','None')
+subplot(1,3,3); area(1:365, F(3,:),'FaceColor',"#1B998B",'EdgeAlpha',0); box off; set(gca,'Color','None')
+%%
 % Experiment with different mobilities
 alpha_par = [0 0.5 1 2];
 diff = zeros(3,length(alpha_par));
@@ -76,7 +82,8 @@ for i = 1:length(alpha_par)
     elseif alpha_par(i) == 0
         R0 = Rt_out;
     end
-    diff(:,i) = sqrt(sum((R(:,par.k:end)-Rt_out.Q50(:,par.k:end)).^2,2,'omitnan')); 
+    diff(:,i) = sum(abs(R(:,par.k:end)-Rt_out.Q50(:,par.k:end))./...
+        R(:,par.k:end),2,'omitnan')/(size(R,2)-par.k+1); 
 end  
 
 

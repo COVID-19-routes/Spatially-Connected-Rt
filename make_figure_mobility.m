@@ -1,9 +1,10 @@
 function make_figure_mobility(Time,csi,eta,x)
 
+    Time.Format = 'MMMyy';
     colors = ["#7c2170"; "#ee746e"; "#808080"];
     prov = ["VR", "VI", "BL", "TV", "VE", "PD", "RO"];
     a = find(eta(1,:),1,'first');
-    figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 16 10])
+    figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 8.7 6])
     for i = 1:7
      if rem(i, 2) == 0
             subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
@@ -20,8 +21,6 @@ function make_figure_mobility(Time,csi,eta,x)
     ylim([0 1.5*max(max(csi))])
     if i < 6
         set(gca,'xticklabel',{[]})
-    else
-        xlabel('Time')
     end
 
     box off
@@ -50,4 +49,5 @@ function make_figure_mobility(Time,csi,eta,x)
             'interpreter','latex','location','north')
         legend boxoff
     end
+    set(findall(gcf,'-property','FontSize'),'FontSize',7)
     end
