@@ -1,0 +1,60 @@
+cff-version: 1.2.0
+title: >-
+  Spatially explicit reproduction numbers from incidence and
+  mobility data.
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Cristiano
+    family-names: Trevisin
+    orcid: 'https://orcid.org/0000-0002-1576-6397'
+  - given-names: Enrico
+    family-names: Bertuzzo
+    orcid: 'https://orcid.org/0000-0001-5872-0666'
+  - orcid: 'https://orcid.org/0000-0001-6892-9826'
+    given-names: Damiano
+    family-names: Pasetto
+  - orcid: 'https://orcid.org/0000-0003-1326-9992'
+    given-names: Lorenzo
+    family-names: Mari
+  - orcid: 'https://orcid.org/0000-0002-7447-049X'
+    given-names: Stefano
+    family-names: Miccoli
+  - orcid: 'https://orcid.org/0000-0001-5177-803X'
+    given-names: Renato
+    family-names: Casagrandi
+  - given-names: Marino
+    family-names: Gatto
+    orcid: 'https://orcid.org/0000-0001-8063-9178'
+  - orcid: 'https://orcid.org/0000-0002-2546-9548'
+    given-names: Andrea
+    family-names: Rinaldo
+repository-code: 'https://github.com/COVID-19-routes/Spatially-Connected-Rt'
+abstract: >-
+  Current methods for near real-time estimation of effective
+  reproduction numbers from surveillance data overlook
+  mobility fluxes of infectors and susceptible individuals
+  within a spatially connected network (the
+  metapopulation). 
+
+  Exchanges of infections among different communities may
+  thus be misrepresented unless explicitly measured and
+  accounted for in the renewal equations.
+
+  Here, we introduce the spatially-explicit effective
+  reproduction numbers, Rk(t), in an arbitrary community k.
+
+  The present code is a tool to estimate, in a Bayesian
+  framework involving particle filtering, the values of
+  Rk(t) maximizing a suitable likelihood function
+  reproducing observed patterns of infections in space and
+  time.
+keywords:
+  - infection spreading mechanisms
+  - human mobility
+  - disease generation interval
+  - particle filtering
+  - COVID-19
+license: MIT
