@@ -12,7 +12,6 @@ Spatially explicit reproduction numbers from incidence and mobility data.
 
 	- `run_synthetic.m`
 	- `run_SMC.m`
-	- `calibrate.m`
 
   Please refer to the comments inside the scripts for more information.
 
