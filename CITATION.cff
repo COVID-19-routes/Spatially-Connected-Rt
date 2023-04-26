@@ -13,24 +13,24 @@ authors:
   - given-names: Enrico
     family-names: Bertuzzo
     orcid: 'https://orcid.org/0000-0001-5872-0666'
-  - orcid: 'https://orcid.org/0000-0001-6892-9826'
-    given-names: Damiano
+  - given-names: Damiano
     family-names: Pasetto
-  - orcid: 'https://orcid.org/0000-0003-1326-9992'
-    given-names: Lorenzo
+    orcid: 'https://orcid.org/0000-0001-6892-9826'
+  - given-names: Lorenzo
     family-names: Mari
-  - orcid: 'https://orcid.org/0000-0002-7447-049X'
-    given-names: Stefano
+    orcid: 'https://orcid.org/0000-0003-1326-9992'
+  - given-names: Stefano
     family-names: Miccoli
-  - orcid: 'https://orcid.org/0000-0001-5177-803X'
-    given-names: Renato
+    orcid: 'https://orcid.org/0000-0002-7447-049X'
+  - given-names: Renato
     family-names: Casagrandi
+    orcid: 'https://orcid.org/0000-0001-5177-803X'
   - given-names: Marino
     family-names: Gatto
     orcid: 'https://orcid.org/0000-0001-8063-9178'
-  - orcid: 'https://orcid.org/0000-0002-2546-9548'
-    given-names: Andrea
+  - given-names: Andrea
     family-names: Rinaldo
+    orcid: 'https://orcid.org/0000-0002-2546-9548'
 repository-code: 'https://github.com/COVID-19-routes/Spatially-Connected-Rt'
 abstract: >-
   Current methods for near real-time estimation of effective
