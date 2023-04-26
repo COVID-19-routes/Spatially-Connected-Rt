@@ -6,6 +6,9 @@ message: >-
   If you use this software, please cite it using the
   metadata from this file.
 type: software
+version: 0.9.0
+date-released: 2023-04-26
+doi: 10.5281/zenodo.7869249
 authors:
   - given-names: Cristiano
     family-names: Trevisin

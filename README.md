@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7869249.svg)](https://doi.org/10.5281/zenodo.7869249)
+
 # Spatially explicit reproduction numbers from incidence and mobility data
 
 This repository contains code and data described in
