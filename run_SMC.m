@@ -8,7 +8,7 @@ clc
 % 'compare_with_EpiEstim' -> compares results with EpiEstim
 % 'make_figure_incidence' -> makes figure with prevalence of active cases
 % 'compare_two_approaches' -> compares the 1st and 2nd approach
-purpose = 'compare_with_EpiEstim';
+purpose = 'run_veneto';
 
 
 % Load incidence
