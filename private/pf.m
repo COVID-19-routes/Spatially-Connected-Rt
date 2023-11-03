@@ -158,8 +158,9 @@ end
 R.Q50(R.Q50 == 0) = NaN;
 end
 
-%% systenatic resampling
+%% systematic resampling
 function [indn]=systematic_resampling(w,NSample)
+indn=zeros(1, NSample);
 u=rand*1/NSample;
 csum=0;
 j=0;

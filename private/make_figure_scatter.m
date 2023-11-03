@@ -1,4 +1,4 @@
-function f = make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
+function make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
 
 
 tau = zeros(size(R.Q50,1),size(R.Q50,2)-(par.init));

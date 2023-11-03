@@ -1,4 +1,4 @@
-function [R, CV] = cori_et_al(data,par,tau)
+function [R, CV] = direct_method(data,par,tau)
 a = (par.mean_GD/par.std_GD)^2;
 b = par.mean_GD/a;
 beta = @(x) gampdf(x,a,b);
