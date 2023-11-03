@@ -17,7 +17,7 @@ for t = burn_in+1:size(R_in,2)
     F(:,t) = mu.*exp(normrnd(0,sigmas));
 
     F(F < 0) = 0;
-   
+
 end
 
 end

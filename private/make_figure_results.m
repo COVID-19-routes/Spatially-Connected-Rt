@@ -23,7 +23,7 @@ for i = 1:7
     if i < 7
         set(gca,'xticklabel',{[]})
     end
-    xlim([Time(a) Time(b)])    
+    xlim([Time(a) Time(b)])
     ylabel('$\mathcal{R}$','interpreter','latex')
     if i == 1
         text(630,1.5,'Verona','Rotation',90,'HorizontalAlignment','center')
@@ -39,21 +39,21 @@ for i = 1:7
         text(630,1.5,'Padua','Rotation',90,'HorizontalAlignment','center')
     elseif i == 7
         text(630,1.5,'Rovigo','Rotation',90,'HorizontalAlignment','center')
-    end                       
+    end
     if i == 1
         legend([p1,p0], '$\mathcal{R}^{\textrm{c}}_l$',...
             '$\mathcal{R}^{\textrm{d}}_l$', 'interpreter', 'latex')
         legend boxoff
     end
-    set(gca, 'Color', 'None') 
+    set(gca, 'Color', 'None')
     ylim([0 3])
-        
+
     subplot(7*2,2*2,[(3+8*(i-1)):(4+8*(i-1)) (7+8*(i-1)):(8+8*(i-1))])
     filler(Time(a:b),data_sim.Q95(i,a:b),data_sim.Q05(i,a:b),colors(3),0.2);
     q1 = filler(Time(a:b),data_obs(i,a:b),zeros(1,b-a+1),[0 0 0],0.15);
     hold on
     q2 = plot(Time(a:b),data_sim.Q50(i,a:b),'color',colors(3),'linewidth',.75);
-	hold off
+    hold off
     xlim([Time(a) Time(b)])
     ylim([0 1.1*max(max(data_sim.Q95))])
     if i < 7

@@ -1,16 +1,16 @@
 function make_figure_mobility(Time,csi,eta,x)
 
-    Time.Format = 'MMMyy';
-    colors = ["#7c2170"; "#ee746e"; "#808080"];
-    prov = ["VR", "VI", "BL", "TV", "VE", "PD", "RO"];
-    a = find(eta(1,:),1,'first');
-    figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 8.7 6])
-    for i = 1:7
-     if rem(i, 2) == 0
-            subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
-        else
-            subplot(4*2,2*2,[1+8*(i-1)/2 2+8*(i-1)/2 5+8*(i-1)/2 6+8*(i-1)/2])
-        end  
+Time.Format = 'MMMyy';
+colors = ["#7c2170"; "#ee746e"; "#808080"];
+prov = ["VR", "VI", "BL", "TV", "VE", "PD", "RO"];
+a = find(eta(1,:),1,'first');
+figure('Renderer', 'painters', 'Units', 'centimeters', 'Position', [1 1 8.7 6])
+for i = 1:7
+    if rem(i, 2) == 0
+        subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
+    else
+        subplot(4*2,2*2,[1+8*(i-1)/2 2+8*(i-1)/2 5+8*(i-1)/2 6+8*(i-1)/2])
+    end
     hold on
     yyaxis left
     p1 = plot(Time(1:end),csi(i,1:end),'color',colors(1),'linewidth',1.25);
@@ -24,19 +24,19 @@ function make_figure_mobility(Time,csi,eta,x)
     end
 
     box off
-    set(gca, 'Color', 'None') 
+    set(gca, 'Color', 'None')
     if rem(i,2) ~= 0
         ylabel('\xi')
-    else 
+    else
         set(gca,'yticklabel',{[]})
     end
-    
+
     yyaxis right
     p3 = plot(Time(a:end),eta(i,a:end),'Color',colors(2),'LineWidth',1.25);
     ylim([0 1])
     if rem(i,2) == 0 || i == 7
         ylabel('\eta')
-    else 
+    else
         set(gca,'yticklabel',{[]})
     end
 
@@ -50,4 +50,4 @@ function make_figure_mobility(Time,csi,eta,x)
         legend boxoff
     end
     set(findall(gcf,'-property','FontSize'),'FontSize',7)
-    end
+end
