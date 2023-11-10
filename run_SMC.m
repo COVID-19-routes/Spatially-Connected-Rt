@@ -1,6 +1,5 @@
-clear all
+clearvars
 close all
-clc
 
 % Purpose
 % 'run_veneto' -> runs the SMC for Veneto region
