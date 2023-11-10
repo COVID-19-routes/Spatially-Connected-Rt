@@ -63,8 +63,16 @@ switch purpose
     case 'run_veneto'
         % run filters
         par.lik = 'V1';
-        [Rt1, diagnostic,model_out] = pf(Fp,par,Q,ResPop,csi);
-        [R0] = pf(Fp,par,Q,ResPop,zeros(7,lim));
+
+        wbarh = waitbar(0, "computing spatially explicit Rt");
+        [Rt1, diagnostic,model_out] = pf(Fp,par,Q,ResPop,csi,@waitbar);
+
+        waitbar(0, wbarh, "computing Rt");
+        [R0] = pf(Fp,par,Q,ResPop,zeros(7,lim),@waitbar);
+        
+        close(wbarh);
+        clear wbarh
+
         % get eta
         alpha = compute_alpha(model_out.Q50,par);
         eta = get_eta(csi,Rt1.Q50,ResPop,alpha,Q);

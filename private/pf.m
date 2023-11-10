@@ -1,4 +1,4 @@
-function [R,diagnostic,model_out] = pf(data,par,Q,ResPop,csi)
+function [R,diagnostic,model_out] = pf(data,par,Q,ResPop,csi,progress)
 % PF Runs the particle filtering algorithm.
 %   Inputs:
 %       - data: the epidemiological data;
@@ -11,6 +11,11 @@ function [R,diagnostic,model_out] = pf(data,par,Q,ResPop,csi)
 %       - diagnostic: the diagnostics.
 %       - model_out: the simulated cases according to the model's
 %       predictions
+
+if nargin == 5
+    % no progress meter supplyed: create dummy function handle
+    progress = @(varargin) (1);
+end
 
 Nc = size(data,1);
 Np = par.Np;
@@ -59,9 +64,6 @@ r_cand = exp(normrnd(repmat(mu_r,1,Np),repmat(sqrt(si2_r),1,Np)));  % samples of
 % Implementation of the particle filtering
 for t = par.init:size(data,2)
 
-    disp(' ')
-    disp(['time: ',num2str(t),' ; ',num2str(t/size(data,2)*100),' %' ])
-
     % Preparing contact matrix
     x=csi(:,t);
     C = diag(1-x)+Q*diag(x);
@@ -90,7 +92,7 @@ for t = par.init:size(data,2)
     w = w/sum(w);
     diagnostic.ESS(t) = 1/sum(w.^2);
 
-    disp(['Neff= ',num2str(diagnostic.ESS(t))])
+    % disp(['Neff= ',num2str(diagnostic.ESS(t))])
 
     if diagnostic.ESS(t) < par.Np*delta
 
@@ -152,6 +154,9 @@ for t = par.init:size(data,2)
     end
 
     diagnostic.loglike(t) = -Nc/2*log(sum((log(data(:,t)./ResPop./mux)).^2));
+
+    %% report progress at end of loop
+    progress(t/size(data,2));
 
 end
 
