@@ -12,19 +12,35 @@ purpose = 'run_veneto';
 
 % Load incidence
 cases = readtable("data/cases.csv");
+ColumnNames = string(cases.Properties.VariableNames);
+assert(ColumnNames(1) == "data");
+Provinces = ColumnNames(2:end);
 Time = cases.data';
-count = table2array(cases(:,2:end)); count(isnan(count))=0;
+clear ColumnNames
+
+% extract new cases
+count = table2array(cases(:,2:end));
+count(isnan(count))=0;
 count = diff([zeros(1,7); count],1);
-cases_province = count'; clear count cases;
+cases_province = count';
+clear count cases;
 
-lim = 600; cases_province = cases_province(:,1:lim); Time = Time(1:lim);
-Fp = smoothdata(cases_province, 2, 'movmean', [13 0]); Fp(Fp<0)=0; cases_province(cases_province<0)=0;
+lim = 600;
+cases_province = cases_province(:,1:lim);
+Time = Time(1:lim);
+Fp = smoothdata(cases_province, 2, 'movmean', [13 0]);
+Fp(Fp<0)=0;
+cases_province(cases_province<0)=0;
 
-% Load Mobility and Population
-load data/mobility P_V
-ResPop = [927108 852861 198518 876755 839396 930898 229097]';
+% Load Population
+pop = readtable("data/respop.csv");
+assert(all(string(pop.NUTS_3') == Provinces), "GEO codes for respop and cases do not coincide")
+ResPop = pop.Resident_Population;
+clear pop Provinces
 
-C = full(P_V); clear P_V;
+% Load Mobility
+C = load("data/mobility.mat", "P_V").("P_V");
+assert(~issparse(C), "Mobility matrix should be full")
 x=(1-diag(C)); % percentage of moving pop
 Q=(C-diag(diag(C)))*diag(1./x); % extradiagonal fluxes
 
