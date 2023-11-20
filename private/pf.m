@@ -75,18 +75,16 @@ for t = par.init:size(data, 2)
     ActPop = C * ResPop;
 
     % Computation of cases and weights
-    mu = zeros(size(data, 1), par.Np);
-    w = zeros(1, par.Np);
 
-    for i = 1:par.Np
-        if strcmp(lik, 'V1')
-            mu(:, i) = (C' * ((C * (r_cand(:, i) .* alpha(:, t))) ./ ActPop)); % ENRICO/MARINO, PERCENTUALE
-        elseif strcmp(lik, 'V2')
-            mu(:, i) = (C' * (r_cand(:, i) ./ ActPop .* (C * alpha(:, t)))); % CRISTIANO, PERCENTUALE
-        end
-        w(i) = -log(sum((log(data(:, t)./ResPop./mu(:, i))).^2, 'omitnan'));
-        mu(:, i) = mu(:, i) .* ResPop;
+    if strcmp(lik, 'V1')
+        % ENRICO/MARINO, PERCENTUALE
+        mu = C' * ((C * (r_cand .* alpha(:, t))) ./ ActPop);
+    elseif strcmp(lik, 'V2')
+        % CRISTIANO, PERCENTUALE
+        mu = C' * (r_cand ./ ActPop .* (C * alpha(:, t)));
     end
+    w = -log(sum((log(data(:, t)./ResPop./mu)).^2, 'omitnan'));
+    mu = mu .* ResPop;
 
 
     % Normalisation
