@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
+import sys
 import zipfile
 from collections import defaultdict
 from pathlib import Path
 
-import click
 import pandas as pd
 import requests
 
@@ -23,7 +23,6 @@ def download(url, path):
 
 
 def read_pendo(path):
-
     mpath = "MATRICE PENDOLARISMO 2011/matrix_pendo2011_10112014.txt"
     with zipfile.ZipFile(path, "r") as zc:
         with zc.open(mpath) as fp:
@@ -151,26 +150,24 @@ def read_pendo(path):
     return df
 
 
-@click.command()
 def main():
-
-    click.echo(f"Download {URL}")
+    print(f"Download {URL}", file=sys.stderr)
     download(URL, LCL)
 
-    click.echo("Parse data")
+    print("Parse data", file=sys.stderr)
     pendo = read_pendo(LCL)
 
     # save "L" strata
     pendo.loc[pendo["strata"] == "L"].drop(
         columns=["strata", "n"],
     ).to_parquet(opth := L_STRATA.with_suffix(".parquet"))
-    click.echo(f"Wrote {opth}")
+    print(f"Wrote {opth}", file=sys.stderr)
 
     # save "S" strata
     pendo.loc[pendo["strata"] == "S"].drop(
         columns=["strata", "transportation", "time", "duration"],
     ).to_parquet(opth := S_STRATA.with_suffix(".parquet"))
-    click.echo(f"Wrote {opth}")
+    print(f"Wrote {opth}", file=sys.stderr)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+import sys
 import tempfile
 import zipfile
 
-import click
 import requests
 
 URL = "https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip"
@@ -16,10 +16,8 @@ def download(url, fp):
                 fp.write(chunk)
 
 
-@click.command()
 def main():
-
-    click.echo(f"Download {URL}")
+    print(f"Download {URL}", file=sys.stderr)
     with tempfile.TemporaryFile() as fp:
         download(URL, fp)
         fp.seek(0)
@@ -29,7 +27,7 @@ def main():
                 "2021_IT_Region_Mobility_Report.csv",
             ]:
                 zc.extract(pth)
-                click.echo(f"Wrote {pth}")
+                print(f"Wrote {pth}", file=sys.stderr)
 
 
 if __name__ == "__main__":
