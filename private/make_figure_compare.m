@@ -9,7 +9,7 @@ function make_figure_compare(Time,R1,R2)
             subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
         else
             subplot(4*2,2*2,[1+8*(i-1)/2 2+8*(i-1)/2 5+8*(i-1)/2 6+8*(i-1)/2])
-        end  
+        end
         hold on
         p1 = plot(Time(1:end),R1(i,a:end),'color',colors(1),'linewidth',0.75);
         p2 = plot(Time(a:end),R2(i,a:end),'Color',colors(2),'LineWidth',0.75,...
@@ -22,20 +22,20 @@ function make_figure_compare(Time,R1,R2)
         if i < 6
             set(gca,'xticklabel',{[]})
         end
-    
+
         box off
-        set(gca, 'Color', 'None') 
+        set(gca, 'Color', 'None')
         if rem(i,2) ~= 0
             ylabel('$\mathcal{R}$','interpreter','latex')
-        else 
+        else
             set(gca,'yticklabel',{[]})
         end
-        
+
         if i == 1
             legend([p1 p2], 'First approach','Second approach')
             legend boxoff
         end
-    
+
     end
     set(findall(gcf,'-property','FontSize'),'FontSize',9)
 end

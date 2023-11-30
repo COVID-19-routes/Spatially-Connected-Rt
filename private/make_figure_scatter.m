@@ -1,6 +1,6 @@
 function f = make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
 
-    
+
     tau = zeros(size(R.Q50,1),size(R.Q50,2)-(par.init));
     for t = par.init+1:size(csi,2)
         C = diag(1-csi(:,t))+diag(csi(:,t))*Q;
@@ -32,8 +32,8 @@ function f = make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
 
 
     colors = {[0.4863    0.1137    0.4353]; [0.9412    0.4549    0.4314]};
-    
-    
+
+
     f = figure('Renderer','painters','Units','centimeters','Position',[0 0 12 12]);
     hold on
     scatter(ak,bk,0.6,'filled','MarkerFaceAlpha',1,'MarkerEdgeAlpha',.0,...
@@ -53,6 +53,6 @@ function f = make_figure_scatter(csi,R,eta,R0,ResPop,Q,par)
     set(findall(gcf,'-property','FontSize'),'FontSize',9)
     xlabel('$\frac{1-\eta_l(t)}{(1-\xi_l(t))^2}\frac{\sum_{m=1}^N C_{lm} n_m}{n_l}$','interpreter','latex','fontsize',15)
     ylabel('$\frac{\mathcal{R}^\mathrm{c}_l(t)}{\mathcal{R}^\mathrm{d}_l(t)}$','interpreter','latex','fontsize',15)
-    
+
 
 end

@@ -13,7 +13,7 @@ Q=(C-diag(diag(C)))*diag(1./x); % extradiagonal fluxes
 N = size(Q,1);
 t = 0:364;                      % gregorian day
 tf = t + [0; 50; 150];          % phases
-T = t(end)+1; 
+T = t(end)+1;
 psi = (1-0.8*sin(4*pi*tf/T));   % seasonal perturbation
 csi = x.*psi;                   % new csi
 
@@ -28,11 +28,11 @@ R(2,1:20) = .8;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARAMETERS
-par.mean_GD = 5.20; 
-par.std_GD = 1.72; 
-par.k = 21; 
-par.delay = 0; 
-par.init = 6; 
+par.mean_GD = 5.20;
+par.std_GD = 1.72;
+par.k = 21;
+par.delay = 0;
+par.init = 6;
 par.Np = 50000;
 
 par.cv_r_0=0.5;
@@ -53,8 +53,8 @@ F = zeros(N,365);
 F(1,1:6) = 25;
 F(2,1:6) = 15;
 F(3,1:6) = 80;
-F = generate_cases(F,par,Q,ResPop,R,csi,6,sigmas); F=round(F(:,1:365)); 
-F0 = generate_cases(F,par,Q,ResPop,R,zeros(3,365),6,sigmas); F0=round(F0(:,1:365)); 
+F = generate_cases(F,par,Q,ResPop,R,csi,6,sigmas); F=round(F(:,1:365));
+F0 = generate_cases(F,par,Q,ResPop,R,zeros(3,365),6,sigmas); F0=round(F0(:,1:365));
 
 
 % get idea of data
@@ -83,8 +83,8 @@ for i = 1:length(alpha_par)
         R0 = Rt_out;
     end
     diff(:,i) = sum(abs(R(:,par.k:end)-Rt_out.Q50(:,par.k:end))./...
-        R(:,par.k:end),2,'omitnan')/(size(R,2)-par.k+1); 
-end  
+        R(:,par.k:end),2,'omitnan')/(size(R,2)-par.k+1);
+end
 
 
 make_figure_synthetic(R,R_out,R0,F,model_out,diff,csi);

@@ -7,8 +7,8 @@ metrics1 = zeros(2,7);
 metrics2 = zeros(2,7);
 
 for i = 1:7
-%     metrics1(1,i) = sqrt(sum((R0(i,:)-R1(i,:)).^2,2,'omitnan')/size(R0,2)); 
-    metrics1(1,i) = sum(abs(R0(i,:)-R1(i,:))./R0(i,:),2,'omitnan')/size(R0,2); 
+%     metrics1(1,i) = sqrt(sum((R0(i,:)-R1(i,:)).^2,2,'omitnan')/size(R0,2));
+    metrics1(1,i) = sum(abs(R0(i,:)-R1(i,:))./R0(i,:),2,'omitnan')/size(R0,2);
     count = 0;
     for t = 1:size(R0,2)
         if (R0(i,t)<1 && R1(i,t)>1) || (R0(i,t)>1 && R1(i,t)<1)
@@ -33,7 +33,7 @@ ax = gca;
 ax.YAxis(1).Color = '#006e90';
 ax.YAxis(2).Color = '#f18f01';
 box off
-set(gca, 'Color', 'None') 
+set(gca, 'Color', 'None')
 set(findall(gcf,'-property','FontSize'),'FontSize',7)
 
 

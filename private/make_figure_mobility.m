@@ -10,7 +10,7 @@ function make_figure_mobility(Time,csi,eta,x)
             subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
         else
             subplot(4*2,2*2,[1+8*(i-1)/2 2+8*(i-1)/2 5+8*(i-1)/2 6+8*(i-1)/2])
-        end  
+        end
     hold on
     yyaxis left
     p1 = plot(Time(1:end),csi(i,1:end),'color',colors(1),'linewidth',1.25);
@@ -24,19 +24,19 @@ function make_figure_mobility(Time,csi,eta,x)
     end
 
     box off
-    set(gca, 'Color', 'None') 
+    set(gca, 'Color', 'None')
     if rem(i,2) ~= 0
         ylabel('\xi')
-    else 
+    else
         set(gca,'yticklabel',{[]})
     end
-    
+
     yyaxis right
     p3 = plot(Time(a:end),eta(i,a:end),'Color',colors(2),'LineWidth',1.25);
     ylim([0 1])
     if rem(i,2) == 0 || i == 7
         ylabel('\eta')
-    else 
+    else
         set(gca,'yticklabel',{[]})
     end
 

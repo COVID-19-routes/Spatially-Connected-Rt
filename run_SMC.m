@@ -41,11 +41,11 @@ csi = x.*gmd_fill_smooth;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PARAMETERS
-par.mean_GD = 5.20; 
-par.std_GD = 1.72; 
-par.k = 21; 
-par.delay = 0; 
-par.init = 6; 
+par.mean_GD = 5.20;
+par.std_GD = 1.72;
+par.k = 21;
+par.delay = 0;
+par.init = 6;
 par.Np = 50000;
 
 par.cv_r_0 = 0.5;
@@ -62,7 +62,7 @@ par.lik = 'V1';
 switch purpose
     case 'run_veneto'
         % run filters
-        par.lik = 'V1'; 
+        par.lik = 'V1';
         [Rt1, diagnostic,model_out] = pf(Fp,par,Q,ResPop,csi);
         [R0] = pf(Fp,par,Q,ResPop,zeros(7,lim));
         % get eta
@@ -98,13 +98,13 @@ switch purpose
         ylabel('Variance')
         box off
         set(findall(gcf,'-property','FontSize'),'FontSize',9)
-        
+
     case 'compare_with_EpiEstim'
         tau = 14;
         cases = sum(cases_province,1);
         Fv = smoothdata(cases, 'movmean', [13 0]); Fv(Fv<0)=0; cases(cases<0)=0;
         R_SMC = pf(Fv,par,1,1,zeros(1,lim));
-        R_EE = direct_method(cases(1:lim),par,tau); 
+        R_EE = direct_method(cases(1:lim),par,tau);
         R_EE(R_EE == Inf)=NaN; R_EE(isnan(R_EE))=0;
         save('results/comparison.mat')
         % Make figure
@@ -137,14 +137,14 @@ switch purpose
             "Venice (VE)", "Padua(PD)", "Rovigo(RO)"],'location','east')
         legend boxoff
         xlim([Time(1) Time(600)])
-        
+
         set(gca,'Color','none')
         set(findall(gcf,'-property','FontSize'),'FontSize',7)
     case 'compare_two_approaches'
         % run filters
-        par.lik = 'V1'; 
+        par.lik = 'V1';
         [Rt1, ~,~] = pf(Fp,par,Q,ResPop,csi);
-        par.lik = 'V2'; 
+        par.lik = 'V2';
         [Rt2, ~,~] = pf(Fp,par,Q,ResPop,csi);
         make_figure_compare(Time,Rt1.Q50,Rt2.Q50)
 

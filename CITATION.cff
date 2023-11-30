@@ -40,7 +40,7 @@ abstract: >-
   reproduction numbers from surveillance data overlook
   mobility fluxes of infectors and susceptible individuals
   within a spatially connected network (the
-  metapopulation). 
+  metapopulation).
 
   Exchanges of infections among different communities may
   thus be misrepresented unless explicitly measured and

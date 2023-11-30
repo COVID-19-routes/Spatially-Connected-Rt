@@ -16,7 +16,7 @@ trips=str2double(t{:,4});
 
 OD=sparse(from_prov,to_prov,trips)';
 P=bsxfun(@rdivide,OD,sum(OD,1));
-    
+
 
 % COMPUTE MATRIX FOR VENETO
 italy_as_8th_node = false;
@@ -31,7 +31,7 @@ if italy_as_8th_node == true
     OD_E = OD; OD_E(23:29,23:29)=0;
     IN_V = sum(OD_E(23:29,:),2); OUT_V = sum(OD_E(:,23:29),1);
     OD_E(23:29,:) = 0; OD_E(:,23:29) = 0; NO_V = sum(OD_E,'all');
-    OD_V(1:7,8) = IN_V; OD_V(8,1:7) = OUT_V; OD_V(8,8) = NO_V; 
+    OD_V(1:7,8) = IN_V; OD_V(8,1:7) = OUT_V; OD_V(8,8) = NO_V;
     prov(8) = "IT";
 end
 
@@ -74,4 +74,3 @@ set(get(cbh,'Title'),'String',{'Movement probability';'from province l to provin
 set(gca,'XTick',p_vect,'YTick',p_vect,'TickDir','out','XTickLabels',prov,'YTickLabels',prov)
 xlabel('Province of origin'); ylabel('Province of destination')
 set(findall(gcf,'-property','FontSize'),'FontSize',10)
-

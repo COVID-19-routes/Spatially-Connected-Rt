@@ -2,7 +2,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
 
     Time.Format = 'MMMyy';
     alphas = [0 0.5 2];
-    
+
     FF = zeros(7,600,length(alphas));
 
     sigmas = zeros(7,1);
@@ -29,7 +29,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
             subplot(4*2,2*2,[3+8*(i-2)/2 4+8*(i-2)/2 7+8*(i-2)/2 8+8*(i-2)/2])
         else
             subplot(4*2,2*2,[1+8*(i-1)/2 2+8*(i-1)/2 5+8*(i-1)/2 6+8*(i-1)/2])
-        end  
+        end
     p3 = filler(Time(1:end),FF(i,1:end,1),zeros(1,length(Time)),[0 0 0],0.15);
     hold on
     p1 = plot(Time(burn_in:end),FF(i,burn_in:end,2),'color',colors(1),'linewidth',1.25);
@@ -40,7 +40,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
     text(Time(20), max(max(FF(i,:,:))), prov(i))
     if i == 7
         lgd = legend([p1 p2 p3 p4],'0', '0.5',...
-            '1', '2','location','west'); 
+            '1', '2','location','west');
         lgd.Title.String = '\psi =';
         legend boxoff;
     end
@@ -53,7 +53,7 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
         set(gca,'xticklabel',{[]})
     end
     box off
-    set(gca, 'Color', 'None') 
+    set(gca, 'Color', 'None')
     end
     set(findall(gcf,'-property','FontSize'),'FontSize',8)
     subplot(4*2,2*2,[27 28 31 32])
@@ -64,8 +64,8 @@ function make_figure_averted(Time,Fp,R,csi,Q,ResPop,par,burn_in)
     end
     box off
     ylim([-100 100])
-    set(gca, 'Color', 'None','YAxisLocation','right') 
-    ylabel('$\delta F$ [\%]','interpreter','latex') 
+    set(gca, 'Color', 'None','YAxisLocation','right')
+    ylabel('$\delta F$ [\%]','interpreter','latex')
     xticklabels(prov)
     set(findall(gcf,'-property','FontSize'),'FontSize',7)
 end

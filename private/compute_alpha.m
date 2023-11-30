@@ -7,9 +7,9 @@ function alpha = compute_alpha(data,par)
     beta_x = beta(1:k+1); beta_x = beta_x/sum(beta_x);
 
     alpha = zeros(size(data));
-    
+
     for t = 2:size(alpha,2)
-	
+
         keff = min(k,t-1);
         alpha(:,t) = sum(flip(data(:,t-keff:t-1),2).*beta_x(1:keff),2);
     end

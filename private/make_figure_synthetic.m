@@ -39,7 +39,7 @@ for nn = 1:3
     end
     set(gca, 'Color', 'None')
     box off
-    
+
     subplot(4*2,2*2,[(3+8*(nn-1)):(4+8*(nn-1)) (7+8*(nn-1)):(8+8*(nn-1))])
     filler(tt(a:end),model_out.Q95(nn,a:end),model_out.Q05(nn,a:end),colors(nn),0.2);
     q1 = filler(tt(a:end),model_in(nn,a:end),ones(1,length(tt)-a+1),[0 0 0],0.15);
@@ -75,7 +75,7 @@ for nn = 1:3
     ylabel('$\xi_l$','interpreter','latex')
     set(gca,'YAxisLocation','right')
 end
-    
+
     subplot(4*2,2*2,[25 26 29 30])
     b = bar(diff'*100);
     for nn = 1:3
@@ -90,5 +90,5 @@ end
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [18 18]);
 set(findall(gcf,'-property','FontSize'),'FontSize',7)
-    
+
 end
