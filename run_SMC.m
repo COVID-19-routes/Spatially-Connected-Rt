@@ -59,6 +59,9 @@ par.lik = 'V1';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RUN
 
+% .mat file version for save operations
+mat_ver = '-v7.3';
+
 switch purpose
     case 'run_veneto'
         % run filters
@@ -74,7 +77,7 @@ switch purpose
         make_figure_scatter(csi,Rt1,eta,R0,ResPop,Q,par)
         make_figure_mobility(Time,csi,eta,x)
         make_figure_metrics(Time,R0.Q50,Rt1.Q50)
-        save('results/run_veneto.mat')
+        save('results/run_veneto.mat', mat_ver)
 
     case 'check_stability'
         Np_Vect = [100 500 1000 5000 10000 50000 100000];
@@ -90,7 +93,7 @@ switch purpose
             VARtemp = var(RES,1,2,'omitnan');
             Var_Vect(nv) = sum(VARtemp,'omitnan');
         end
-        save('results/stability.mat')
+        save('results/stability.mat', mat_ver)
         % Make figure
         figure('Renderer','painters','Units','centimeters','Position',[0 0 16 7])
         semilogx(Np_Vect,Var_Vect,'--.k','MarkerSize',15)
@@ -106,7 +109,7 @@ switch purpose
         R_SMC = pf(Fv,par,1,1,zeros(1,lim));
         R_EE = direct_method(cases(1:lim),par,tau);
         R_EE(R_EE == Inf)=NaN; R_EE(isnan(R_EE))=0;
-        save('results/comparison.mat')
+        save('results/comparison.mat', mat_ver)
         % Make figure
         colors = ["#00798c", "#edae49"];
         figure('Renderer','painters','Units','centimeters','Position',[0 0 16 9])
