@@ -22,7 +22,10 @@ lim = 600; cases_province = cases_province(:,1:lim); Time = Time(1:lim);
 Fp = smoothdata(cases_province, 2, 'movmean', [13 0]); Fp(Fp<0)=0; cases_province(cases_province<0)=0;
 
 % Load Mobility and Population
-load data/mobility P_V
+% hdf5 files should be interpreted as row major (C) order, but matlab
+% insists in reading them in column major (FORTRAN) order,
+% hence the transpose
+P_V = h5read('data/mobility.hdf5', '/P_V')';
 ResPop = [927108 852861 198518 876755 839396 930898 229097]';
 
 C = full(P_V); clear P_V;

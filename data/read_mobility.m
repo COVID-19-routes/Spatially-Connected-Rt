@@ -3,9 +3,9 @@ close all
 clc
 
 % READ MATRIX FOR ITALY
-opts=detectImportOptions('pendo_2011/matrix_pendo2011_10112014.txt');
+opts=detectImportOptions('ISTAT/matrix_pendo2011_10112014.txt');
 opts.SelectedVariableNames=[1 3 8 15];
-t=readtable('pendo_2011/matrix_pendo2011_10112014.txt',opts);
+t=readtable('ISTAT/matrix_pendo2011_10112014.txt',opts);
 
 tbr=(cell2mat(t{:,1})=='L' | t{:,3}==0);
 t(tbr,:)=[];
@@ -37,7 +37,7 @@ end
 
 P_V = OD_V./sum(OD_V,1);
 
-save('mobility.mat', 'OD_V', 'P_V')
+save('mobility.mat', 'OD_V', 'P_V', '-v7.3')
 
 figure()
 imagesc(P_V)

@@ -1,5 +1,2 @@
 results/*.mat
 !results/*-ref.mat
-data/ISTAT/matrici_pendolarismo_2011.zip
-data/ISTAT/matrici_?.parquet
-data/Google/202?_IT_Region_Mobility_Report.csv
