@@ -55,4 +55,4 @@ GMD(7,:) = table2array(t_RO(:,6))';
 
 GMD = 1+GMD/100;
 
-save('google-data.mat','Time_GMD',"GMD")
+save('google-data.mat','Time_GMD',"GMD", '-v7.3')
