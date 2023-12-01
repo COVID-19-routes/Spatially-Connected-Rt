@@ -83,7 +83,7 @@ for t = par.init:size(data, 2)
         % CRISTIANO, PERCENTUALE
         mu = C' * (r_cand ./ ActPop .* (C * alpha(:, t)));
     end
-    w = -log(sum((log(data(:, t)./ResPop./mu)).^2, 'omitnan'));
+    w = -log(sum((log(data(:, t)./ResPop./mu)).^2, 1, 'omitnan'));
     mu = mu .* ResPop;
 
 
