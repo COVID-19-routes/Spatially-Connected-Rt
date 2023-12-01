@@ -1,11 +1,16 @@
 function [R, diagnostic, model_out] = pf(data, par, Q, ResPop, csi, progress)
 % PF Runs the particle filtering algorithm.
+%
+%   [R, diagnostic, model_out] = pf(data, par, Q, ResPop, csi, progress)
+%
 %   Inputs:
 %       - data: the epidemiological data;
 %       - par: the parameter set;
 %       - Q: the initial contact matrix;
 %       - ResPop: the resident population;
 %       - csi: the fraction of outgoing mobility
+%   Optional Inputs:
+%       - progress: progress meter function (usually hooked to a waitbar)
 %   Outputs:
 %       - R: the estimated reproduction number;
 %       - diagnostic: the diagnostics.
@@ -15,44 +20,43 @@ function [R, diagnostic, model_out] = pf(data, par, Q, ResPop, csi, progress)
 if nargin == 5
     % no progress meter supplyed: create dummy function handle
     progress = @(varargin) (1);
+elseif nargin < 5
+    error('Not enough input arguments.')
 end
 
-Nc = size(data, 1);
+% Nc: number of nodes
+% Nt: number of time steps
+% Np: numper of particles
+[Nc, Nt] = size(data);
 Np = par.Np;
-lik = par.lik;
 
-% minimum value of alpha to perform the resampling of parameters
-alpha_min = par.alpha_min;
-% perform resampling when Neff<tau*N
-delta = par.delta;
+% par.alpha_min: minimum value of alpha to perform the resampling of parameters
+% par.delta: perform resampling when Neff < par.delta * Np
 
 % compute alphas (convolution)
 alpha = compute_alpha(data, par);
 data(data == 0) = NaN;
 
-% par.initialisation of vectors
-R.Q50 = zeros(Nc, size(data, 2));
-R.Q05 = zeros(Nc, size(data, 2));
-R.Q25 = zeros(Nc, size(data, 2));
-R.Q75 = zeros(Nc, size(data, 2));
-R.Q95 = zeros(Nc, size(data, 2));
+% initialisation of vectors
+R.Q50 = zeros(Nc, Nt);
+R.Q05 = zeros(Nc, Nt);
+R.Q25 = zeros(Nc, Nt);
+R.Q75 = zeros(Nc, Nt);
+R.Q95 = zeros(Nc, Nt);
 
-diagnostic.loglike = zeros(1, size(data, 2));
-diagnostic.ESS = zeros(1, size(data, 2));
+diagnostic.loglike = zeros(1, Nt);
+diagnostic.ESS = zeros(1, Nt);
 
-diagnostic.sigma_r.Q50 = zeros(Nc, size(data, 2));
-diagnostic.sigma_r.Q05 = zeros(Nc, size(data, 2));
-diagnostic.sigma_r.Q95 = zeros(Nc, size(data, 2));
+diagnostic.sigma_r.Q50 = zeros(Nc, Nt);
+diagnostic.sigma_r.Q05 = zeros(Nc, Nt);
+diagnostic.sigma_r.Q95 = zeros(Nc, Nt);
 
 % mean and std for parameter r (Rt, log-normally distributed)
 r_mu_new = 3 * ones(Nc, 1);
-
-cv_r_0 = par.cv_r_0;
-sigma_r_new = cv_r_0 * r_mu_new;
-low_cv_r = par.low_cv_r;
+sigma_r_new = par.cv_r_0 * r_mu_new;
 
 % initialize weights (w=1/Np)
-logW_old = -log(par.Np) * ones(1, par.Np);
+logW_old = -log(Np) * ones(1, Np);
 
 % sample initial candidates for parameters
 
@@ -67,7 +71,7 @@ mu_r = log(r_mu_new) - 0.5 * si2_r;
 r_cand = exp(normrnd(repmat(mu_r, 1, Np), repmat(sqrt(si2_r), 1, Np)));
 
 %% implementation of the particle filtering
-for t = par.init:size(data, 2)
+for t = par.init:Nt
 
     % Preparing contact matrix
     x = csi(:, t);
@@ -76,16 +80,16 @@ for t = par.init:size(data, 2)
 
     % Computation of cases and weights
 
-    if strcmp(lik, 'V1')
-        % ENRICO/MARINO, PERCENTUALE
-        mu = C' * ((C * (r_cand .* alpha(:, t))) ./ ActPop);
-    elseif strcmp(lik, 'V2')
-        % CRISTIANO, PERCENTUALE
-        mu = C' * (r_cand ./ ActPop .* (C * alpha(:, t)));
+    switch par.lik
+        case 'V1' % ENRICO/MARINO, PERCENTUALE
+            mu = C' * ((C * (r_cand .* alpha(:, t))) ./ ActPop);
+        case 'V2' % CRISTIANO, PERCENTUALE
+            mu = C' * (r_cand ./ ActPop .* (C * alpha(:, t)));
+        otherwise
+            error("Wrong par.lik.")
     end
     w = -log(sum((log(data(:, t)./ResPop./mu)).^2, 1, 'omitnan'));
     mu = mu .* ResPop;
-
 
     % Normalisation
     w = w + logW_old;
@@ -97,13 +101,13 @@ for t = par.init:size(data, 2)
 
     % disp(['Neff= ',num2str(diagnostic.ESS(t))])
 
-    if diagnostic.ESS(t) < par.Np * delta
+    if diagnostic.ESS(t) < Np * par.delta
 
-        sel = systematic_resampling(w, par.Np);
+        sel = systematic_resampling(w, Np);
         r_temp = zeros(size(r_cand));
 
         for nn = 1:Nc
-            if alpha(:, t) > alpha_min
+            if alpha(:, t) > par.alpha_min
                 r_temp(nn, :) = r_cand(nn, sel);
             else
                 r_temp(nn, :) = r_cand(nn, :);
@@ -113,7 +117,7 @@ for t = par.init:size(data, 2)
         r_mu_new = mean(r_temp, 2);
         sigma_r_new = std(r_temp, 0, 2);
         cv_r = sigma_r_new ./ r_mu_new;
-        cv_r(cv_r < low_cv_r) = low_cv_r;
+        cv_r(cv_r < par.low_cv_r) = par.low_cv_r;
 
         % variance of the normal distribution associated to the lognormal
         si2_r = log(cv_r.^2+1);
@@ -126,7 +130,7 @@ for t = par.init:size(data, 2)
             repmat(sqrt(si2_r), 1, Np)));
 
         % set weights to 1/Np after resampling
-        logW_old = -log(par.Np) * ones(1, par.Np);
+        logW_old = -log(Np) * ones(1, Np);
 
     end
 
@@ -149,16 +153,17 @@ for t = par.init:size(data, 2)
     diagnostic.sigma_r.Q95(:, t) = prctile(sigma_r_new, 95, 2);
 
     % median statistics
-    if strcmp(lik, 'V2')
-        mux = (C' * (R.Q50(:, t) ./ ActPop .* (C * alpha(:, t))));
-    elseif strcmp(lik, 'V1')
-        mux = (C' * ((C * (R.Q50(:, t) .* alpha(:, t))) ./ ActPop));
+    switch par.lik
+        case 'V2'
+            mux = (C' * (R.Q50(:, t) ./ ActPop .* (C * alpha(:, t))));
+        case 'V1'
+            mux = (C' * ((C * (R.Q50(:, t) .* alpha(:, t))) ./ ActPop));
     end
 
     diagnostic.loglike(t) = -Nc / 2 * log(sum((log(data(:, t)./ResPop./mux)).^2));
 
-    % report progress at end of loop
-    progress(t/size(data, 2));
+    % report progress at end of time step loop
+    progress(t/Nt);
 
 end
 
