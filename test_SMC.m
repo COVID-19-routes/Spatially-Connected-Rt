@@ -34,8 +34,10 @@ ResPop = pop.Resident_Population;
 clear pop GEO
 
 % Load Mobility
-C = load("data/mobility.mat", "P_V").("P_V");
-assert(~issparse(C), "Mobility matrix should be full")
+% hdf5 files should be interpreted as row major (C) order, but matlab
+% insists in reading them in column major (FORTRAN) order,
+% hence the transpose
+C = h5read('data/mobility.hdf5', '/P_V')';
 x = (1 - diag(C)); % percentage of moving pop
 Q = (C - diag(diag(C))) * diag(1./x); % extradiagonal fluxes
 
