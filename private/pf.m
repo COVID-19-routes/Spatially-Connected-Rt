@@ -134,23 +134,26 @@ for t = par.init:Nt
 
     end
 
-    %To output
+    % To output
     % these statistics should be weighted statistics
-    R.Q05(:, t) = prctile(r_cand, 5, 2);
-    R.Q25(:, t) = prctile(r_cand, 25, 2);
-    R.Q50(:, t) = median(r_cand, 2);
-    R.Q75(:, t) = prctile(r_cand, 75, 2);
-    R.Q95(:, t) = prctile(r_cand, 95, 2);
+    temp = prctile(r_cand, [5,25,50,75,95], 2);
+    R.Q05(:, t) = temp(:,1);
+    R.Q25(:, t) = temp(:,2);
+    R.Q50(:, t) = temp(:,3);
+    R.Q75(:, t) = temp(:,4);
+    R.Q95(:, t) = temp(:,5);
 
-    model_out.Q05(:, t) = prctile(mu, 5, 2);
-    model_out.Q25(:, t) = prctile(mu, 25, 2);
-    model_out.Q50(:, t) = median(mu, 2);
-    model_out.Q75(:, t) = prctile(mu, 75, 2);
-    model_out.Q95(:, t) = prctile(mu, 95, 2);
+    temp = prctile(mu, [5,25,50,75,95], 2);
+    model_out.Q05(:, t) = temp(:,1);
+    model_out.Q25(:, t) = temp(:,2);
+    model_out.Q50(:, t) = temp(:,3);
+    model_out.Q75(:, t) = temp(:,4);
+    model_out.Q95(:, t) = temp(:,5);
 
-    diagnostic.sigma_r.Q50(:, t) = median(sigma_r_new, 2);
-    diagnostic.sigma_r.Q05(:, t) = prctile(sigma_r_new, 5, 2);
-    diagnostic.sigma_r.Q95(:, t) = prctile(sigma_r_new, 95, 2);
+    temp = prctile(sigma_r_new, [5,50,95], 2);
+    diagnostic.sigma_r.Q50(:, t) = temp(:,2);
+    diagnostic.sigma_r.Q05(:, t) = temp(:,1);
+    diagnostic.sigma_r.Q95(:, t) = temp(:,3);
 
     % median statistics
     switch par.lik
