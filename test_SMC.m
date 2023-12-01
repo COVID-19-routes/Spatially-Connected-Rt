@@ -1,9 +1,6 @@
 clearvars
 close all
 
-% seed random number generator state
-rng(0, 'twister');
-
 % Load incidence
 cases = readtable("data/cases.csv");
 ColumnNames = string(cases.Properties.VariableNames);
@@ -71,7 +68,7 @@ par.lik = 'V1';
 
 % output file name
 filename = fullfile('results', [mfilename(), '.mat']);
-disp(filename)
+fprintf("Saving input parameters in '%s'\n", filename)
 
 % create fresh matlab v7.3 (hdf5) output file
 warning('off', 'MATLAB:DELETE:FileNotFound')
@@ -88,37 +85,39 @@ matout.csi = csi;
 %% roundtrip
 clearvars
 filename = fullfile('results', [mfilename(), '.mat']);
+fprintf("Loading input parameters from '%s'\n", filename)
 load(filename)
 
+fprintf("Saving results in '%s'\n", filename)
 matout = matfile(filename, Writable = true);
 
 %% RUN
 
-% create waitbar
-wbarh = waitbar(0, "");
+% seed random number generator state and record start time
+rng(0, 'twister');
+tstart = tic;
 
 % run spatial Rt V1
-waitbar(0, wbarh, "computing spatially explicit Rt V1");
-[Rt1, diagnostic, model_out] = ...
-    pf(new_cases_smooth, par, Q, ResPop, csi, @waitbar);
+disp('Spatial Rt V1')
+[Rt1, diagnostic, model_out] = pf(new_cases_smooth, par, Q, ResPop, csi);
 % save results
 matout.Rt1 = Rt1;
 matout.diagnostic = diagnostic;
 matout.model_out = model_out;
 
 % run local Rt
-waitbar(0, wbarh, "computing Rt");
-[R0] = pf(new_cases_smooth, par, Q, ResPop, zeros(size(csi)), @waitbar);
+disp('Local Rt')
+[R0] = pf(new_cases_smooth, par, Q, ResPop, zeros(size(csi)));
 % save result
 matout.R0 = R0;
 
 % run spatial explicit Rt V2
+disp('Spatial Rt V2')
 par.lik = 'V2';
-waitbar(0, wbarh, "computing spatially explicit Rt V2");
-[Rt2] = pf(new_cases_smooth, par, Q, ResPop, csi, @waitbar);
+[Rt2] = pf(new_cases_smooth, par, Q, ResPop, csi);
 % save result
 matout.Rt2 = Rt2;
 
-% close waitbar
-close(wbarh);
-clear wbarh
+% report times
+telapsed = toc(tstart);
+fprintf("Elapsed time %.3f s\n", telapsed)
