@@ -3,9 +3,9 @@ close all
 clc
 
 % READ MATRIX FOR ITALY
-opts=detectImportOptions('pendo_2011/matrix_pendo2011_10112014.txt');
+opts=detectImportOptions('ISTAT/matrix_pendo2011_10112014.txt');
 opts.SelectedVariableNames=[1 3 8 15];
-t=readtable('pendo_2011/matrix_pendo2011_10112014.txt',opts);
+t=readtable('ISTAT/matrix_pendo2011_10112014.txt',opts);
 
 tbr=(cell2mat(t{:,1})=='L' | t{:,3}==0);
 t(tbr,:)=[];
@@ -16,7 +16,7 @@ trips=str2double(t{:,4});
 
 OD=sparse(from_prov,to_prov,trips)';
 P=bsxfun(@rdivide,OD,sum(OD,1));
-    
+
 
 % COMPUTE MATRIX FOR VENETO
 italy_as_8th_node = false;
@@ -31,13 +31,13 @@ if italy_as_8th_node == true
     OD_E = OD; OD_E(23:29,23:29)=0;
     IN_V = sum(OD_E(23:29,:),2); OUT_V = sum(OD_E(:,23:29),1);
     OD_E(23:29,:) = 0; OD_E(:,23:29) = 0; NO_V = sum(OD_E,'all');
-    OD_V(1:7,8) = IN_V; OD_V(8,1:7) = OUT_V; OD_V(8,8) = NO_V; 
+    OD_V(1:7,8) = IN_V; OD_V(8,1:7) = OUT_V; OD_V(8,8) = NO_V;
     prov(8) = "IT";
 end
 
 P_V = OD_V./sum(OD_V,1);
 
-save('mobility.mat', 'OD_V', 'P_V')
+save('mobility.mat', 'OD_V', 'P_V', '-v7.3')
 
 figure()
 imagesc(P_V)
@@ -74,4 +74,3 @@ set(get(cbh,'Title'),'String',{'Movement probability';'from province l to provin
 set(gca,'XTick',p_vect,'YTick',p_vect,'TickDir','out','XTickLabels',prov,'YTickLabels',prov)
 xlabel('Province of origin'); ylabel('Province of destination')
 set(findall(gcf,'-property','FontSize'),'FontSize',10)
-

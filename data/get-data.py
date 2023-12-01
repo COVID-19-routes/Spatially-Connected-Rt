@@ -69,7 +69,7 @@ def get_data():
     cases = cases.interpolate(method="time", limit_area="inside")
 
     cases.index = cases.index.tz_convert(None).to_period("1D")
-    
+
     cases = cases[["ITH31", "ITH32", "ITH33", "ITH34", "ITH35", "ITH36", "ITH37"]]
 
     date_range = pd.period_range(start=cases.index.min(), end=cases.index.max())

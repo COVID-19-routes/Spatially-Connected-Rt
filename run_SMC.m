@@ -40,7 +40,10 @@ ResPop = pop.Resident_Population;
 clear pop Provinces
 
 % Load Mobility
-C = load("data/mobility.mat", "P_V").("P_V");
+% hdf5 files should be interpreted as row major (C) order, but matlab
+% insists in reading them in column major (FORTRAN) order,
+% hence the transpose
+C = h5read('data/mobility.hdf5', '/P_V')';
 assert(~issparse(C), "Mobility matrix should be full")
 x = (1 - diag(C)); % percentage of moving pop
 Q = (C - diag(diag(C))) * diag(1./x); % extradiagonal fluxes
@@ -76,6 +79,9 @@ par.lik = 'V1';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % RUN
 
+% .mat file version for save operations
+mat_ver = '-v7.3';
+
 switch purpose
 
     case 'run_veneto'
@@ -104,7 +110,7 @@ switch purpose
         make_figure_scatter(csi, Rt1, eta, R0, ResPop, Q, par)
         make_figure_mobility(Time, csi, eta, x)
         make_figure_metrics(Time, R0.Q50, Rt1.Q50)
-        save('results/run_veneto.mat')
+        save('results/run_veneto.mat', mat_ver)
 
     case 'check_stability'
         Np_Vect = [100, 500, 1000, 5000, 10000, 50000, 100000];
@@ -120,7 +126,7 @@ switch purpose
             VARtemp = var(RES, 1, 2, 'omitnan');
             Var_Vect(nv) = sum(VARtemp, 'omitnan');
         end
-        save('results/stability.mat')
+        save('results/stability.mat', mat_ver)
         % Make figure
         figure('Renderer', 'painters', ...
             'Units', 'centimeters', ...
@@ -141,7 +147,7 @@ switch purpose
         R_EE = direct_method(cases(1:lim), par, tau);
         R_EE(R_EE == Inf) = NaN;
         R_EE(isnan(R_EE)) = 0;
-        save('results/comparison.mat')
+        save('results/comparison.mat', mat_ver)
         % Make figure
         colors = ["#00798c", "#edae49"];
         figure('Renderer', 'painters', ...
