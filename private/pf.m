@@ -74,7 +74,7 @@ si2_r = log(cv_r.^2+1);
 mu_r = log(r_mu_new) - 0.5 * si2_r;
 
 % samples of the lognormal distribution for R
-r_cand = exp(normrnd(repmat(mu_r, 1, Np), repmat(sqrt(si2_r), 1, Np)));
+r_cand = lognorm(mu_r, si2_r, Np);
 
 %% implementation of the particle filtering
 for t = par.init:Nt
@@ -132,8 +132,7 @@ for t = par.init:Nt
 
 
         % samples of the lognormal distribution for R
-        r_cand = exp(normrnd(repmat(mu_r, 1, Np), ...
-            repmat(sqrt(si2_r), 1, Np)));
+        r_cand = lognorm(mu_r, si2_r, Np);
 
         % set weights to 1/Np after resampling
         logW_old = -log(Np) * ones(1, Np);
@@ -194,4 +193,10 @@ for cont_sample = 1:NSample
     u = u + 1 / NSample;
 end
 return
+end
+
+%% helper functions
+function [r] = lognorm(mu, sigma2, Np)
+% samples of the lognormal distribution for R
+r = lognrnd(repmat(mu, 1, Np), repmat(sqrt(sigma2), 1, Np));
 end
