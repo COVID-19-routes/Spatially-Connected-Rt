@@ -109,15 +109,13 @@ for t = par.init:Nt
 
     if diagnostic.ESS(t) < Np * par.delta
 
-        sel = systematic_resampling(w, Np);
-        r_temp = zeros(size(r_cand));
-
-        for nn = 1:Nc
-            if alpha(:, t) > par.alpha_min
-                r_temp(nn, :) = r_cand(nn, sel);
-            else
-                r_temp(nn, :) = r_cand(nn, :);
-            end
+        if alpha(:, t) > par.alpha_min
+            sel = systematic_resampling(w, Np);
+            r_temp = r_cand(:, sel);
+        else
+            % FIXME: this is redundant, but necessary to keep rng state
+            systematic_resampling(w, Np);
+            r_temp = r_cand;
         end
 
         r_mu_new = mean(r_temp, 2);
@@ -180,16 +178,21 @@ end
 
 %% systematic resampling
 function [indn] = systematic_resampling(w, NSample)
+
+if nargout == 0
+    rand();
+    return
+end
+
 indn = zeros(1, NSample);
-u = rand * 1 / NSample;
-csum = 0;
-j = 0;
-for cont_sample = 1:NSample
-    while csum < u
+u = rand() / NSample;
+csum = cumsum(w);
+j = 1;
+for i_sample = 1:NSample
+    while csum(j) < u
         j = j + 1;
-        csum = csum + w(j);
     end
-    indn(cont_sample) = j;
+    indn(i_sample) = j;
     u = u + 1 / NSample;
 end
 return
