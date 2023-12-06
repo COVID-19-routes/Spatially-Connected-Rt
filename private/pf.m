@@ -51,6 +51,12 @@ diagnostic.sigma_r.Q50 = zeros(Nc, Nt);
 diagnostic.sigma_r.Q05 = zeros(Nc, Nt);
 diagnostic.sigma_r.Q95 = zeros(Nc, Nt);
 
+model_out.Q05 = zeros(Nc, Nt);
+model_out.Q25 = zeros(Nc, Nt);
+model_out.Q50 = zeros(Nc, Nt);
+model_out.Q75 = zeros(Nc, Nt);
+model_out.Q95 = zeros(Nc, Nt);
+
 % mean and std for parameter r (Rt, log-normally distributed)
 r_mu_new = 3 * ones(Nc, 1);
 sigma_r_new = par.cv_r_0 * r_mu_new;
